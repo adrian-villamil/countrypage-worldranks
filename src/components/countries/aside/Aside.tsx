@@ -34,7 +34,7 @@ export const Aside = () => {
   };
 
   return (
-    <div className="w-full lg:w-64 flex flex-col gap-8">
+    <div className="w-full lg:w-64 xl:w-80 flex flex-col gap-8">
       {/* SORT BY */}
       <div className="flex flex-col gap-2">
         <h6 className="text-gray text-xs">Sort by</h6>
