@@ -1,14 +1,10 @@
 'use server';
 
 import { Country } from "@/interfaces/country.interface";
+import { getCountryByCode } from "./get-country-by-code";
 
-export const getNeighboringCountries = async (borders: string[] | undefined): Promise<Country[]> => {
+export const getNeighboringCountries = async (borders: string[] | undefined): Promise<(Country | null)[]> => {
   if (!borders) return [];
   
-  const codes = borders.join(',');
-  const response = await fetch(`https://restcountries.com/v3.1/alpha?codes=${codes}&fields=name,flags`);
-
-  if (!response.ok) return [];
-
-  return response.json();
+  return await Promise.all(borders.map((border) => getCountryByCode(border)));
 };

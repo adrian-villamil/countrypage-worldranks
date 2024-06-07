@@ -2,10 +2,10 @@
 
 import { Country } from "@/interfaces/country.interface";
 
-export const getCountryByCode = async (cca3: string): Promise<Country[]> => {
-  const response = await fetch(`https://restcountries.com/v3.1/alpha/${cca3}`);
+export const getCountryByCode = async (cca3: string): Promise<Country | null> => {
+  const response = await fetch(`http://localhost:3000/api/country/${cca3}`);
 
-  if (!response.ok) [];
+  if (!response.ok) return null;
 
   return response.json();
 };
