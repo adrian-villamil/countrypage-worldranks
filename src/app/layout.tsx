@@ -1,8 +1,7 @@
-import Image from "next/image";
 import type { Metadata } from "next";
 import { beVietnamPro } from "@/config/fonts";
-import "./globals.css";
 import { HeroImage } from "@/components";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Country Page - WorldRanks",
