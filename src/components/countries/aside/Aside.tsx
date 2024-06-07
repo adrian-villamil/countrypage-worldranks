@@ -1,36 +1,46 @@
 'use client';
 
-import { useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "../button/Button";
 import { Checkbox } from "../checkbox/Checkbox";
+import { parseStringToBoolean } from "@/utils";
 
 const regions = ['Americas', 'Antarctic', 'Africa', 'Asia', 'Europe', 'Oceania'];
 
 export const Aside = () => {
-  const [sortBy, setSortBy] = useState('population');
-  const [filterByRegions, setFilterByRegions] = useState<string[]>([]);
-  const [filterByStatus, setFilterByStatus] = useState({
-    unitedNation: false,
-    independent: true,
-  });
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortBy(event.target.value);
-  };
-
-  const handleRegionsChange = (region: string) => {
-    if (filterByRegions.includes(region)) {
-      const updatedRegions = filterByRegions.filter((reg) => reg !== region);
-      setFilterByRegions(updatedRegions);
+    const { value } = event.target;
+    const params = new URLSearchParams(searchParams);
+    if (value) {
+      params.set('sort_by', value);
     } else {
-      const updatedRegions = [...filterByRegions, region];
-      setFilterByRegions(updatedRegions);
+      params.delete('sort_by');
     }
+
+    replace(`${pathname}?${params.toString()}`);
   };
 
-  const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleButtonChange = (region: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (params.has('region', region)) {
+      params.delete('region', region);
+    } else {
+      params.append('region', region);
+    }
+
+    replace(`${pathname}?${params.toString()}`);
+  };
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
-    setFilterByStatus((filterByStatus) => ({ ...filterByStatus, [name]: checked }));
+    const params = new URLSearchParams(searchParams);
+    params.set(name, checked.toString());
+
+    replace(`${pathname}?${params.toString()}`);
   };
 
   return (
@@ -41,11 +51,11 @@ export const Aside = () => {
         <select
           name="sort-list"
           id="sort-list"
-          value={sortBy}
+          defaultValue={searchParams.get('sort_by') ?? 'population'}
           onChange={handleSelectChange}
           className="px-[14px] py-[9px] pr-5 bg-dark-black border-2 border-gray/15 rounded-xl text-white text-sm appearance-none bg-[url('/Expand_down.svg')] bg-no-repeat bg-[calc(100%-14px)]"
         >
-          <option value="name" className="p-5">Name</option>
+          <option value="name">Name</option>
           <option value="population">Population</option>
           <option value="area">Area</option>
         </select>
@@ -58,8 +68,8 @@ export const Aside = () => {
           {regions.map((region) => (
             <Button
               key={region}
-              isActive={filterByRegions.includes(region)}
-              onClick={() => handleRegionsChange(region)}
+              isActive={searchParams.has('region', region.toLowerCase())}
+              onClick={() => handleButtonChange(region.toLowerCase())}
             >
               {region}
             </Button>
@@ -72,16 +82,16 @@ export const Aside = () => {
         <h6 className="text-gray text-xs">Status</h6>
         <div className="flex flex-col items-start gap-3">
           <Checkbox
-            name="unitedNation"
+            name="is_united_nation"
             label="Member of the United Nations"
-            checked={filterByStatus.unitedNation}
-            onChange={handleStatusChange}
+            checked={parseStringToBoolean(searchParams.get('is_united_nation') ?? 'false')}
+            onChange={handleCheckboxChange}
           />
           <Checkbox
-            name="independent"
+            name="is_independent"
             label="Independent"
-            checked={filterByStatus.independent}
-            onChange={handleStatusChange}
+            checked={parseStringToBoolean(searchParams.get('is_independent') ?? 'false')}
+            onChange={handleCheckboxChange}
           />
         </div>
       </div>

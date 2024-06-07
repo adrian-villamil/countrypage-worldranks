@@ -9,7 +9,7 @@ interface Props {
 
 export const Table = ({ countries }: Props) => {
   return (
-    <table className="table-fixed border-collapse flex-1">
+    <table className="w-full table-fixed border-collapse flex-1">
       <thead>
         <tr>
           <th className="text-gray text-xs text-left font-medium border-b-2 border-gray/20 pb-4">Flag</th>

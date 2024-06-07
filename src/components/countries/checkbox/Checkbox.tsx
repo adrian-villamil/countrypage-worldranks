@@ -19,7 +19,7 @@ export const Checkbox = ({ name, label, checked, onChange }: Props) => {
         type="checkbox"
         name={name}
         id={name}
-        checked={checked}
+        defaultChecked={checked}
         onChange={onChange}
         className="absolute opacity-0 cursor-pointer w-0 h-0 peer"
       />
