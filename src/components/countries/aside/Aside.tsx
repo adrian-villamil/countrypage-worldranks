@@ -20,6 +20,7 @@ export const Aside = () => {
     } else {
       params.delete('sort_by');
     }
+    params.set('page', '1');
 
     replace(`${pathname}?${params.toString()}`);
   };
@@ -31,6 +32,7 @@ export const Aside = () => {
     } else {
       params.append('region', region);
     }
+    params.set('page', '1');
 
     replace(`${pathname}?${params.toString()}`);
   };
@@ -39,12 +41,13 @@ export const Aside = () => {
     const { name, checked } = event.target;
     const params = new URLSearchParams(searchParams);
     params.set(name, checked.toString());
+    params.set('page', '1');
 
     replace(`${pathname}?${params.toString()}`);
   };
 
   return (
-    <div className="w-full lg:w-64 xl:w-80 flex flex-col gap-8">
+    <div className="w-full lg:w-52 xl:w-[265px] flex flex-col gap-8">
       {/* SORT BY */}
       <div className="flex flex-col gap-2">
         <h6 className="text-gray text-xs">Sort by</h6>

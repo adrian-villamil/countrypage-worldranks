@@ -10,6 +10,11 @@ export async function GET(request: NextRequest) {
   const isUnitedNation = parseStringToBoolean(searchParams.get('is_united_nation') ?? 'false');
   const isIndependent = parseStringToBoolean(searchParams.get('is_independent') ?? 'false');
   const search = searchParams.get('search');
+  const take = 12;
+  let page = parseInt(searchParams.get('page') ?? '1');
+
+  if (isNaN(page)) page = 1;
+  if (page < 1) page = 1;
 
   let filteredRegions = [];
   let unMembers = [];
@@ -51,9 +56,16 @@ export async function GET(request: NextRequest) {
     searched = [...sorted];
   }
 
+  const count = searched.length;
+  const totalPages = Math.ceil(count / take);
+  const lastIndex = page * take;
+  const firstIndex = lastIndex - take;
+  const slicedCountries = searched.slice(firstIndex, lastIndex);
+
   const countriesResponse: CountriesResponse = {
-    count: sorted.length,
-    countries: searched,
+    count: count,
+    totalPages: totalPages,
+    countries: slicedCountries,
   };
 
   return NextResponse.json(countriesResponse, { status: 200 });

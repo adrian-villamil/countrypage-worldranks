@@ -2,6 +2,7 @@ import { Country } from "./country.interface";
 
 export interface CountriesResponse {
   count: number;
+  totalPages: number;
   countries: Country[];
 }
 
@@ -11,6 +12,7 @@ export interface SearchParams {
   is_united_nation?: string;
   is_independent?: string;
   search?: string;
+  page?: string;
 }
 
 export type SorterQuery = 'name' | 'population' | 'area';
