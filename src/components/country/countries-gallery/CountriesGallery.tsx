@@ -12,7 +12,7 @@ export const CountriesGallery = async ({ borders }: Props) => {
   return (
     <div className="flex flex-wrap gap-4">
       {neighboringCountries.map((country) => country && (
-        <Link href={`/country/${country.cca3}`} className="flex flex-col gap-2">
+        <Link key={country.cca3} href={`/country/${country.cca3}`} className="flex flex-col gap-2">
           <Image
             src={country.flags.png}
             alt={country.name.common}
