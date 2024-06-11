@@ -9,38 +9,40 @@ interface Props {
 
 export const Table = ({ countries }: Props) => {
   return (
-    <table className="w-full table-fixed border-collapse flex-1">
-      <thead>
-        <tr>
-          <th className="text-gray text-xs text-left font-medium border-b-2 border-gray/20 pb-4">Flag</th>
-          <th className="text-gray text-xs text-left font-medium border-b-2 border-gray/20 pb-4">Name</th>
-          <th className="text-gray text-xs text-left font-medium border-b-2 border-gray/20 pb-4">Population</th>
-          <th className="text-gray text-xs text-left font-medium border-b-2 border-gray/20 pb-4">Area (km²)</th>
-          <th className="text-gray text-xs text-left font-medium border-b-2 border-gray/20 pb-4 hidden lg:table-cell">Region</th>
-        </tr>
-      </thead>
-      <tbody>
-        {countries.map((country) => (
-          <tr key={country.name.official}>
-            <td className="py-3">
-              <Link href={`/country/${country.cca3}`}>
-                <Image
-                  src={country.flags.png}
-                  alt={country.flags.alt ?? country.name.common}
-                  width={320}
-                  height={233}
-                  priority
-                  className="max-w-[50px] h-10 rounded object-cover"
-                />
-              </Link>
-            </td>
-            <td className="text-white text-left py-3">{country.name.common}</td>
-            <td className="text-white text-left py-3">{formatNumber(country.population)}</td>
-            <td className="text-white text-left py-3">{formatNumber(country.area)}</td>
-            <td className="text-white text-left py-3 hidden lg:table-cell">{country.region}</td>
+    <div className="overflow-x-auto w-full flex-1">
+      <table className="w-full border-collapse">
+        <thead>
+          <tr>
+            <th className="text-gray text-xs text-left font-medium border-b-2 border-gray/20 pb-4 pr-3">Flag</th>
+            <th className="text-gray text-xs text-left font-medium border-b-2 border-gray/20 pb-4 pr-3">Name</th>
+            <th className="text-gray text-xs text-left font-medium border-b-2 border-gray/20 pb-4 pr-3">Population</th>
+            <th className="text-gray text-xs text-left font-medium border-b-2 border-gray/20 pb-4 pr-3">Area (km²)</th>
+            <th className="text-gray text-xs text-left font-medium border-b-2 border-gray/20 pb-4 hidden lg:table-cell">Region</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {countries.map((country) => (
+            <tr key={country.name.official}>
+              <td className="py-3 pr-3">
+                <Link href={`/country/${country.cca3}`}>
+                  <Image
+                    src={country.flags.png}
+                    alt={country.flags.alt ?? country.name.common}
+                    width={320}
+                    height={233}
+                    priority
+                    className="max-w-[50px] h-10 rounded object-cover"
+                  />
+                </Link>
+              </td>
+              <td className="text-white text-left py-3 pr-3">{country.name.common}</td>
+              <td className="text-white text-left py-3 pr-3">{formatNumber(country.population)}</td>
+              <td className="text-white text-left py-3 pr-3">{formatNumber(country.area)}</td>
+              <td className="text-white text-left py-3 hidden lg:table-cell">{country.region}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };

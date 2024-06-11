@@ -9,7 +9,7 @@ export const HeroImage = () => {
         width={1280}
         height={300}
         priority
-        className="absolute top-11 xl:top-0 left-0 w-full h-[300px] object-cover -z-20"
+        className="absolute top-[49px] xl:top-0 left-1/2 -translate-x-1/2 h-[276px] xl:h-[300px] object-cover -z-20"
       />
       <Image
         src={'/Logo.svg'}
