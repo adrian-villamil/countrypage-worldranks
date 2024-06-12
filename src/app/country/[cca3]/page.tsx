@@ -53,11 +53,11 @@ export default async function CountryPage({ params }: Props) {
         </div>
         <div className="flex justify-between px-5 py-6">
           <span className="text-gray text-sm">Language</span>
-          <span className="text-white text-sm">{Object.values(country.languages ?? { lan: 'No languages' }).join(',')}</span>
+          <span className="text-white text-sm">{Object.values(country.languages ?? { lan: 'No languages' }).join(', ')}</span>
         </div>
         <div className="flex justify-between px-5 py-6">
           <span className="text-gray text-sm">Currencies</span>
-          <span className="text-white text-sm">{country.currencies ? Object.values(country.currencies).map((currency) => currency.name).join(',') : 'No currencies'}</span>
+          <span className="text-white text-sm">{country.currencies ? Object.values(country.currencies).map((currency) => currency.name).join(', ') : 'No currencies'}</span>
         </div>
         <div className="flex justify-between px-5 py-6">
           <span className="text-gray text-sm">Continents</span>
