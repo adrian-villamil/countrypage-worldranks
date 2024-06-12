@@ -9,7 +9,7 @@ export interface CountriesResponse {
 export interface SearchParams {
   sort_by?: SorterQuery;
   region?: RegionQuery | RegionQuery[];
-  is_united_nation?: string;
+  is_un_member?: string;
   is_independent?: string;
   search?: string;
   page?: string;

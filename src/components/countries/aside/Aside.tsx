@@ -85,9 +85,9 @@ export const Aside = () => {
         <h6 className="text-gray text-xs">Status</h6>
         <div className="flex flex-col items-start gap-3">
           <Checkbox
-            name="is_united_nation"
+            name="is_un_member"
             label="Member of the United Nations"
-            checked={parseStringToBoolean(searchParams.get('is_united_nation') ?? 'false')}
+            checked={parseStringToBoolean(searchParams.get('is_un_member') ?? 'false')}
             onChange={handleCheckboxChange}
           />
           <Checkbox
