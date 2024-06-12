@@ -1,51 +1,82 @@
 'use server';
 
-import type { CountriesResponse, SearchParams } from "@/interfaces";
+import type { CountriesResponse, Country, SearchParams } from "@/interfaces";
+import { filterCountriesByRegions, parseStringToBoolean, sortCountries } from "@/utils";
 
-export const getAllCountries = async (searchParams: SearchParams): Promise<CountriesResponse> => {
-  const baseUrl = 'http://localhost:3000/api/country';
+export const fetchCountries = async (): Promise<Country[]> => {
+  const response = await fetch('https://restcountries.com/v3.1/all');
+
+  if (!response.ok) {
+    return [];
+  }
+
+  return response.json();
+};
+
+export const getAllCountries = async (searchParams: SearchParams, take: number = 12): Promise<CountriesResponse> => {
   const sortBy = searchParams.sort_by;
-  const region = searchParams.region;
-  const isUnitedNation = searchParams.is_united_nation;
+  const regions = searchParams.region;
+  const isUnMember = searchParams.is_un_member;
   const isIndependent = searchParams.is_independent;
   const search = searchParams.search;
-  const page = searchParams.page;
+  let page = parseInt(searchParams.page ?? '1');
 
-  const querys: string[] = [];
+  const countries = await fetchCountries();
+
+  if (isNaN(page)) page = 1;
+  if (page < 1) page = 1;
+
+  let filteredRegions = [];
+  let unMembers = [];
+  let independents = [];
+  let sorted = [];
+  let searched = [];
+
+  if (regions) {
+    filteredRegions = filterCountriesByRegions(countries, regions);
+  } else {
+    filteredRegions = [...countries];
+  }
+
+  if (isUnMember && parseStringToBoolean(isUnMember)) {
+    unMembers = filteredRegions.filter((country) => country.unMember);
+  } else {
+    unMembers = [...filteredRegions];
+  }
+
+  if (isIndependent && parseStringToBoolean(isIndependent)) {
+    independents = unMembers.filter((country) => country.independent);
+  } else {
+    independents = [...unMembers];
+  }
 
   if (sortBy) {
-    querys.push(`sort_by=${sortBy}`);
-  }
-
-  if (region) {
-    if (Array.isArray(region)) {
-      region.forEach((reg) => querys.push(`region=${reg}`));
-    } else {
-      querys.push(`region=${region}`);
-    }
-  }
-
-  if (isUnitedNation) {
-    querys.push(`is_united_nation=${isUnitedNation}`);
-  }
-
-  if (isIndependent) {
-    querys.push(`is_independent=${isIndependent}`);
+    sorted = sortCountries(independents, sortBy);
+  } else {
+    sorted = sortCountries(independents, 'population');
   }
 
   if (search) {
-    querys.push(`search=${search}`);
+    searched = sorted.filter((country) => (
+      country.name.common.toLowerCase().includes(search.toLowerCase()) ||
+      country.region.toLowerCase().includes(search.toLowerCase()) ||
+      country.subregion?.toLowerCase().includes(search.toLowerCase())
+    ));
+  } else {
+    searched = [...sorted];
   }
 
-  if (page) {
-    querys.push(`page=${page}`);
-  }
+  const count = searched.length;
+  const totalPages = Math.ceil(count / take);
+  const lastIndex = page * take;
+  const firstIndex = lastIndex - take;
+  const slicedCountries = searched.slice(firstIndex, lastIndex);
 
-  const url = querys.length > 0 ? `${baseUrl}?${querys.join('&')}` : baseUrl;
+  const countriesResponse: CountriesResponse = {
+    count: count,
+    totalPages: totalPages,
+    countries: slicedCountries,
+  };
 
-  const response = await fetch(url);
-
-  if (!response.ok) ({ count: 0, totalPages: 0, countries: [] });
-  
-  return response.json();
+  return countriesResponse;
 };

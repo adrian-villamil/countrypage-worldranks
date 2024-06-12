@@ -1,5 +1,5 @@
 export const generatePaginationNumbers = (currentPage: number, totalPages: number) => {
-  if (totalPages <= 7) return Array.from({ length: totalPages }).map((v, i) => i + 1);
+  if (totalPages <= 7) return Array.from({ length: totalPages }).map((_, i) => i + 1);
 
   if (currentPage <= 4) return [1, 2, 3, 4, 5, '...', totalPages];
 
