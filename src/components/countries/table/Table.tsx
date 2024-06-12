@@ -35,7 +35,11 @@ export const Table = ({ countries }: Props) => {
                   />
                 </Link>
               </td>
-              <td className="text-white text-left py-3 pr-3">{country.name.common}</td>
+              <td className="text-white text-left py-3 pr-3">
+                <Link href={`/country/${country.cca3}`}>
+                  {country.name.common}
+                </Link>
+              </td>
               <td className="text-white text-left py-3 pr-3">{formatNumber(country.population)}</td>
               <td className="text-white text-left py-3 pr-3">{formatNumber(country.area)}</td>
               <td className="text-white text-left py-3 hidden lg:table-cell">{country.region}</td>
