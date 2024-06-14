@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export const HeroImage = () => {
   return (
@@ -11,14 +12,18 @@ export const HeroImage = () => {
         priority
         className="absolute top-[49px] xl:top-0 left-1/2 -translate-x-1/2 h-[276px] xl:h-[300px] object-cover -z-20"
       />
-      <Image
-        src={'/Logo.svg'}
-        alt="Logo"
-        width={174}
-        height={24}
-        priority
+      <Link
+        href={'/'}
         className="absolute top-[120px] left-1/2 -translate-x-1/2 -z-10"
-      />
+      >
+        <Image
+          src={'/Logo.svg'}
+          alt="Logo"
+          width={174}
+          height={24}
+          priority
+        />
+      </Link>
     </div>
   );
 };
