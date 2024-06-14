@@ -14,6 +14,7 @@ export const Header = ({ count }: Props) => {
 
   const handleSearch = useDebouncedCallback((query: string) => {
     const params = new URLSearchParams(searchParams);
+    params.set('page', '1');
 
     if (query) {
       params.set('search', query);

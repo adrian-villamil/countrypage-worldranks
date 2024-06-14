@@ -15,24 +15,26 @@ export const Aside = () => {
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;
     const params = new URLSearchParams(searchParams);
+    params.set('page', '1');
+
     if (value) {
       params.set('sort_by', value);
     } else {
       params.delete('sort_by');
     }
-    params.set('page', '1');
 
     replace(`${pathname}?${params.toString()}`);
   };
 
   const handleButtonChange = (region: string) => {
     const params = new URLSearchParams(searchParams);
+    params.set('page', '1');
+
     if (params.has('region', region)) {
       params.delete('region', region);
     } else {
       params.append('region', region);
     }
-    params.set('page', '1');
 
     replace(`${pathname}?${params.toString()}`);
   };
@@ -40,8 +42,8 @@ export const Aside = () => {
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
     const params = new URLSearchParams(searchParams);
-    params.set(name, checked.toString());
     params.set('page', '1');
+    params.set(name, checked.toString());
 
     replace(`${pathname}?${params.toString()}`);
   };
