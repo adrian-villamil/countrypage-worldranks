@@ -2,12 +2,17 @@
 
 import type { Country } from "@/interfaces";
 
+const fields = [
+  'flags', 'name', 'population',
+  'area', 'region', 'subregion',
+  'capital', 'languages', 'currencies', 
+  'continents', 'borders', 'cca3'
+];
+
 export const getCountryByCode = async (cca3: string): Promise<Country | null> => {
-  const response = await fetch(`https://restcountries.com/v3.1/alpha/${cca3}`);
+  const response = await fetch(`https://restcountries.com/v3.1/alpha/${cca3}?fields=${fields.join(',')}`);
 
   if (!response.ok) return null;
 
-  const country: Country[] = await response.json();
-
-  return country[0];
+  return response.json();
 };

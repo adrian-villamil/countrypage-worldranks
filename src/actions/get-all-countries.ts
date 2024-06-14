@@ -3,8 +3,16 @@
 import type { CountriesResponse, Country, SearchParams } from "@/interfaces";
 import { filterCountriesByRegions, parseStringToBoolean, sortCountries } from "@/utils";
 
+const fields = [
+  'flags', 'name', 'population',
+  'area', 'region', 'subregion',
+  'independent', 'unMember', 'capital',
+  'languages', 'currencies', 'continents',
+  'borders', 'cca3'
+];
+
 export const fetchCountries = async (): Promise<Country[]> => {
-  const response = await fetch('https://restcountries.com/v3.1/all');
+  const response = await fetch(`https://restcountries.com/v3.1/all?fields=${fields.join(',')}`);
 
   if (!response.ok) {
     return [];
