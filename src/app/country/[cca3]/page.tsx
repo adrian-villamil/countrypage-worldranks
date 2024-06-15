@@ -4,6 +4,12 @@ import { getCountryByCode } from "@/actions";
 import { formatNumber } from "@/utils";
 import { CountriesGallery, CountriesGallerySkeleton } from "@/components";
 
+export const generateStaticParams = async () => {
+  const countries = await fetch('https://restcountries.com/v3.1/all?fields=cca3');
+
+  return countries.json();
+};
+
 interface Props {
   params: { cca3: string };
 }
