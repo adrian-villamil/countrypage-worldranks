@@ -4,6 +4,10 @@ import { getCountryByCode } from "@/actions";
 import { formatNumber } from "@/utils";
 import { CountriesGallery, CountriesGallerySkeleton } from "@/components";
 
+export const revalidate = 15552000;
+
+export const dynamicParams = true;
+
 export const generateStaticParams = async () => {
   const countries = await fetch('https://restcountries.com/v3.1/all?fields=cca3');
 
